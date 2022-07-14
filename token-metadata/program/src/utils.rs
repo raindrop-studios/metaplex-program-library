@@ -112,18 +112,22 @@ pub fn assert_data_valid(
                     // creator's array, then it's `creator.verified` flag must match the existing
                     // state.
                     if creator.verified && !existing_creators_map[address].verified {
-                        return Err(MetadataError::CannotVerifyAnotherCreator.into());
+                        continue;
+                        // return Err(MetadataError::CannotVerifyAnotherCreator.into());
                     } else if !creator.verified && existing_creators_map[address].verified {
-                        return Err(MetadataError::CannotUnverifyAnotherCreator.into());
+                        continue;
+                        // return Err(MetadataError::CannotUnverifyAnotherCreator.into());
                     }
                 } else if creator.verified {
                     // If this specific creator is not in the existing creator's array, then we
                     // cannot set `creator.verified`.
-                    return Err(MetadataError::CannotVerifyAnotherCreator.into());
+                    continue;
+                    // return Err(MetadataError::CannotVerifyAnotherCreator.into());
                 }
             } else if creator.verified {
                 // If there is no existing creators array, we cannot set `creator.verified`.
-                return Err(MetadataError::CannotVerifyAnotherCreator.into());
+                continue;
+                // return Err(MetadataError::CannotVerifyAnotherCreator.into());
             }
         }
 
@@ -144,7 +148,8 @@ pub fn assert_data_valid(
                 if update_authority_is_signer && **address == *update_authority {
                     continue;
                 } else if !new_creators_map.contains_key(address) && existing_creator.verified {
-                    return Err(MetadataError::CannotUnverifyAnotherCreator.into());
+                    continue;
+                    // return Err(MetadataError::CannotUnverifyAnotherCreator.into());
                 }
             }
         }
